@@ -84,3 +84,14 @@ void delete_item(List *list, char *key, Destructor destr)
 		free(temp2);
 	}
 }
+
+void add_item(List *list, char *key, Pointer data, Destructor destr)
+{
+	if (!list)
+	{
+		list = (List*)malloc(sizeof(List));
+		list->key = (char*)malloc(strlen(key) + 1);
+		list->key = strcpy(list->key, key);
+		list->data = (Pointer)malloc();
+	}
+}

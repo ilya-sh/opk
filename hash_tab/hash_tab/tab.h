@@ -31,7 +31,7 @@ void ht_destroy(HashTable *ht);
 
 /* Записать в таблицу соответствие key -> data. Если key уже существовал,
 * соотв. поле data будет удалено (dtor) и перезаписано */
-Pointer ht_set(HashTable *ht, char *key, Pointer data);
+void ht_set(HashTable *ht, char *key, Pointer data);
 
 /* Получить значение по ключу. Если ключа нет в таблице, вернуть 0. */
 Pointer ht_get(HashTable *ht, char *key);

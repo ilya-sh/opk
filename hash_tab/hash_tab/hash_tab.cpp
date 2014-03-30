@@ -35,7 +35,7 @@ HashTable *ht_init(unsigned size, HashFunction hf, Destructor dtor)
 
 Pointer ht_get(HashTable *ht, char *key)
 {
-	if (!ht)
+	if ((!ht) || (!key))
 		return NULL;
 	HashTag h_tag = ht->hashfunc(key);
 	Pointer res = search_data_by_key(ht->table[h_tag % ht->size], key);
@@ -44,7 +44,7 @@ Pointer ht_get(HashTable *ht, char *key)
 
 int ht_has(HashTable *ht, char *key)
 {
-	if (!ht)
+	if ((!ht) || (!key))
 		return 0;
 	HashTag h_tag = ht->hashfunc(key);
 	return data_has(ht->table[h_tag % ht->size], key);
@@ -66,7 +66,7 @@ void ht_destroy(HashTable *ht)
 
 void ht_delete(HashTable *ht, char *key)
 {
-	if (!ht)
+	if ((!ht) || (!key))
 		return;
 	HashTag h_tag = ht->hashfunc(key);
 	if (!ht->table[h_tag % ht->size])
@@ -87,6 +87,15 @@ void ht_delete(HashTable *ht, char *key)
 		delete_item(ht->table[h_tag % ht->size], key, ht->dtor);
 	}
 }
+
+void ht_set(HashTable *ht, char *key, Pointer data)
+{
+	if ((!ht) || (!key) || (!data))
+		return;
+	HashTag h_tag = ht->hashfunc(key);
+	add_item(ht->table[h_tag % ht->size], key, data, ht->dtor);
+}
+
 
 unsigned jenkins_hash(char *key)
 {

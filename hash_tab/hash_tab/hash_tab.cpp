@@ -57,7 +57,7 @@ void ht_destroy(HashTable *ht)
 	unsigned i;
 	for (i = 0; i < ht->size; i++)
 	{
-		if (ht->table[i])
+		//if (ht->table[i])
 			delete_list(ht->table[i], ht->dtor);
 	}
 	free(ht->table);
@@ -69,8 +69,23 @@ void ht_delete(HashTable *ht, char *key)
 	if (!ht)
 		return;
 	HashTag h_tag = ht->hashfunc(key);
-	if (ht->table[h_tag % ht->size])
+	if (!ht->table[h_tag % ht->size])
+		return;
+	if (!strcmp(ht->table[h_tag % ht->size]->key, key))
+	{
+		List *temp = ht->table[h_tag % ht->size];
+		ht->table[h_tag % ht->size] = ht->table[h_tag % ht->size]->next;
+		free(temp->key);
+		if (ht->dtor)
+			ht->dtor(temp->data);
+		free(temp->data);
+		free(temp);
+
+	}
+	else
+	{
 		delete_item(ht->table[h_tag % ht->size], key, ht->dtor);
+	}
 }
 
 unsigned jenkins_hash(char *key)

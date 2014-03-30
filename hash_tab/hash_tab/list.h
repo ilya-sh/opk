@@ -11,4 +11,4 @@ int data_has(List *list, char *key);
 
 void delete_list(List *list, Destructor destr);
 
-void delete_item(List *list,char *key, Destructor destr);
+void delete_item(List *list, char *key, Destructor destr);

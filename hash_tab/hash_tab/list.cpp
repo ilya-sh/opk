@@ -62,4 +62,25 @@ void delete_item(List *list, char *key, Destructor destr)
 {
 	if (!list)
 		return;
+	List *temp = list;
+	List *temp_next = temp->next;
+	while (temp_next)
+	{
+		if (!strcmp(temp_next->key, key))
+			break;
+		temp = temp_next;
+		temp_next = temp_next->next;
+	}
+	if (temp_next)
+	{
+		free(temp_next->key);
+		if (destr)
+		{
+			destr(temp_next->data);
+		}
+		free(temp_next->data);
+		List *temp2 = temp->next;
+		temp->next = temp_next->next;
+		free(temp2);
+	}
 }

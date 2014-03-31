@@ -11,6 +11,8 @@ int data_has(List *list, char *key);
 
 void delete_list(List *list, Destructor destr);
 
-void delete_item(List *list, char *key, Destructor destr);
+List* delete_item(List *list, char *key, Destructor destr);
 
-void add_item(List *list, char *key, Pointer data, Destructor destr);
+List* add_item(List *list, char *key, Pointer data, Destructor destr);
+
+void list_traverse(List *list, void(*f)(char *key, Pointer data));

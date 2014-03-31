@@ -17,7 +17,11 @@ HashTable *ht_init(unsigned size, HashFunction hf, Destructor dtor)
 	{
 		ht->hashfunc = hf;
 	}
-	if (dtor != NULL)
+	if (dtor == NULL)
+	{
+		ht->dtor = NULL;
+	}
+	else
 	{
 		ht->dtor = dtor;
 	}
@@ -47,7 +51,7 @@ int ht_has(HashTable *ht, char *key)
 	if ((!ht) || (!key))
 		return 0;
 	HashTag h_tag = ht->hashfunc(key);
-	return data_has(ht->table[h_tag % ht->size], key);
+	return (data_has(ht->table[h_tag % ht->size], key));
 }
 
 void ht_destroy(HashTable *ht)
@@ -57,8 +61,7 @@ void ht_destroy(HashTable *ht)
 	unsigned i;
 	for (i = 0; i < ht->size; i++)
 	{
-		//if (ht->table[i])
-			delete_list(ht->table[i], ht->dtor);
+		delete_list(ht->table[i], ht->dtor);
 	}
 	free(ht->table);
 	free(ht);
@@ -71,21 +74,7 @@ void ht_delete(HashTable *ht, char *key)
 	HashTag h_tag = ht->hashfunc(key);
 	if (!ht->table[h_tag % ht->size])
 		return;
-	if (!strcmp(ht->table[h_tag % ht->size]->key, key))
-	{
-		List *temp = ht->table[h_tag % ht->size];
-		ht->table[h_tag % ht->size] = ht->table[h_tag % ht->size]->next;
-		free(temp->key);
-		if (ht->dtor)
-			ht->dtor(temp->data);
-		free(temp->data);
-		free(temp);
-
-	}
-	else
-	{
-		delete_item(ht->table[h_tag % ht->size], key, ht->dtor);
-	}
+	ht->table[h_tag % ht->size] = delete_item(ht->table[h_tag % ht->size], key, ht->dtor);
 }
 
 void ht_set(HashTable *ht, char *key, Pointer data)
@@ -93,7 +82,20 @@ void ht_set(HashTable *ht, char *key, Pointer data)
 	if ((!ht) || (!key) || (!data))
 		return;
 	HashTag h_tag = ht->hashfunc(key);
-	add_item(ht->table[h_tag % ht->size], key, data, ht->dtor);
+	ht->table[h_tag % ht->size] = add_item(ht->table[h_tag % ht->size], key, data, ht->dtor);
+}
+
+void ht_traverse(HashTable *ht, void(*f)(char *key, Pointer data))
+{
+	if ((!ht) || (!f))
+		return;
+	unsigned i;
+	for (i = 0; i < ht->size; i++)
+		if (ht->table[i])
+		{
+			list_traverse(ht->table[i], f);
+		}
+
 }
 
 

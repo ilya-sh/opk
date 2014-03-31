@@ -1,9 +1,10 @@
-typedef void *Pointer;
+typedef char *Pointer;
 typedef unsigned(*HashFunction)(char *key);
 typedef void(*Destructor)(Pointer);
 
 #include <stddef.h>
 #include "list.h"
+
 
 typedef unsigned HashTag;
 
@@ -24,7 +25,7 @@ typedef struct HashTable {
 * Если hf=0, берется стандартная функция (Дженкинс).
 * Если dtor=0, деструктор отсутствует (не будет вызываться).
 */
-HashTable *ht_init(size_t size, HashFunction hf, Destructor dtor);
+HashTable *ht_init(unsigned size, HashFunction hf, Destructor dtor);
 
 /* Уничтожить таблицу */
 void ht_destroy(HashTable *ht);
@@ -55,7 +56,13 @@ void ht_traverse(HashTable *ht, void(*f)(char *key, Pointer data));
 * Это эффективнее, чем создавать новую таблицу и делать в нее полноценные
 * вставки.
 */
-void ht_resize(HashTable *ht, size_t new_size);
+void ht_resize(HashTable *ht, unsigned new_size);
 
 /*Хеш-функция Дженкинса*/
 unsigned jenkins_hash(char *key);
+
+unsigned uns_str_len(char *key);
+
+void test();
+
+void print_keys_data(char *key, Pointer data);

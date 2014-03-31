@@ -1,13 +1,15 @@
 #include "tab.h"
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 Pointer search_data_by_key(List *list, char *key)
 {
 	if (!list)
-		return 0;
+		return NULL;
 	List *temp = list;
-	do {
+	while (temp)
+	{
 		if (strcmp(key, temp->key))
 		{
 			temp = temp->next;
@@ -16,7 +18,7 @@ Pointer search_data_by_key(List *list, char *key)
 		{
 			return temp->data;
 		}
-	} while (temp->next);
+	}
 	return NULL;
 }
 
@@ -25,7 +27,8 @@ int data_has(List *list, char *key)
 	if (!list)
 		return 0;
 	List *temp = list;
-	do {
+	while (temp) 
+	{
 		if (strcmp(key, temp->key))
 		{
 			temp = temp->next;
@@ -34,7 +37,7 @@ int data_has(List *list, char *key)
 		{
 			return 1;
 		}
-	} while (temp->next);
+	}
 	return 0;
 }
 
@@ -50,7 +53,8 @@ void delete_list(List *list, Destructor destr)
 		{
 			destr(list->data);
 		}
-		free(list->data);
+		//free(list->data);
+		list->data = NULL;
 		free(list->key);
 		free(list);
 		list = temp;
@@ -58,17 +62,27 @@ void delete_list(List *list, Destructor destr)
 	} while(list);
 }
 
-void delete_item(List *list, char *key, Destructor destr)
+List* delete_item(List *list, char *key, Destructor destr)
 {
 	if (!list)
-		return;
-	List *temp = list;
-	List *temp_next = temp->next;
+		return NULL;
+	if (!strcmp(key, list->key))
+	{
+		List *temp = list->next;
+		free(list->key);
+		if (destr)
+			destr(list->data);
+		list->data = NULL;
+		free(list);
+		return temp;
+	}
+	List *temp_prev = list;
+	List *temp_next = temp_prev->next;
 	while (temp_next)
 	{
 		if (!strcmp(temp_next->key, key))
 			break;
-		temp = temp_next;
+		temp_prev = temp_next;
 		temp_next = temp_next->next;
 	}
 	if (temp_next)
@@ -78,20 +92,59 @@ void delete_item(List *list, char *key, Destructor destr)
 		{
 			destr(temp_next->data);
 		}
-		free(temp_next->data);
-		List *temp2 = temp->next;
-		temp->next = temp_next->next;
+		//free(temp_next->data);
+		temp_next->data = NULL;
+		List *temp2 = temp_prev->next;
+		temp_prev->next = temp_next->next;
 		free(temp2);
 	}
+	return list;
 }
 
-void add_item(List *list, char *key, Pointer data, Destructor destr)
+List* add_item(List *list, char *key, Pointer data, Destructor destr)
 {
 	if (!list)
 	{
 		list = (List*)malloc(sizeof(List));
 		list->key = (char*)malloc(strlen(key) + 1);
 		list->key = strcpy(list->key, key);
-		list->data = (Pointer)malloc();
+		list->data = data;
+		list->next = NULL;
+		return list;
 	}
+	List *beg = list;
+	List *prev = NULL;
+	while (list)
+	{
+		if (!strcmp(list->key, key))
+		{
+			if (destr)
+				destr(list->data);
+			list->data = data;
+			return beg;
+		}
+		prev = list;
+		list = list->next;
+	}
+	list = (List*)malloc(sizeof(List));
+	list->key = (char*)malloc(strlen(key) + 1);
+	list->key = strcpy(list->key, key);
+	list->data = data;
+	list->next = NULL;
+	prev->next = list;
+	return beg;
+}
+
+void list_traverse(List *list, void(*f)(char *key, Pointer data))
+{
+	while (list)
+	{
+		f(list->key, list->data);
+		list = list->next;
+	}
+}
+
+void print_keys_data(char *key, Pointer data)
+{
+	printf("%s\t%s\n", key, data);
 }

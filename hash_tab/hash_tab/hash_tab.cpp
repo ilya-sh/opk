@@ -95,9 +95,33 @@ void ht_traverse(HashTable *ht, void(*f)(char *key, Pointer data))
 		{
 			list_traverse(ht->table[i], f);
 		}
-
 }
 
+void ht_resize(HashTable *ht, unsigned new_size)
+{
+	if ((!ht) || (!new_size))
+		return;
+	List** new_table = (List**)malloc(sizeof(List*)* new_size);
+	if (!new_table)
+	{
+		return;
+	}
+	unsigned i;
+	for (i = 0; i < new_size; i++)
+		new_table[i] = NULL;
+	HashTag h_tag;
+	for (i = 0; i < ht->size; i++)
+	{
+		while (ht->table[i])
+		{
+			h_tag = ht->hashfunc((peek_b(ht->table[i]))->key);
+			new_table[h_tag % new_size] = push_b(new_table[h_tag % new_size], pop_b(ht->table[i]));
+		}
+	}
+	free(ht->table);
+	ht->table = new_table;
+	ht->size = new_size;
+}
 
 unsigned jenkins_hash(char *key)
 {

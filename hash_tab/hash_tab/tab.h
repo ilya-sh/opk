@@ -1,4 +1,4 @@
-typedef char *Pointer;
+typedef void *Pointer;
 typedef unsigned(*HashFunction)(char *key);
 typedef void(*Destructor)(Pointer);
 

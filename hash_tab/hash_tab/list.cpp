@@ -144,6 +144,42 @@ void list_traverse(List *list, void(*f)(char *key, Pointer data))
 	}
 }
 
+List* push_b(List *buf, List *source)
+{	
+	if (!buf)
+	{
+		return source;
+	}
+	List *beg = buf;
+	while (buf->next)
+	{
+		buf = buf->next;
+	}
+	buf->next = source;
+	return beg;
+}
+
+List* pop_b(List *source)
+{
+	List* prev = NULL;
+	while (source->next)
+	{
+		prev = source;
+		source = source->next;
+	} 
+	prev->next = NULL;
+	return source;
+}
+
+List* peek_b(List *source)
+{
+	while (source->next)
+	{
+		source = source->next;
+	}
+	return source;
+}
+
 void print_keys_data(char *key, Pointer data)
 {
 	printf("%s\t%s\n", key, data);

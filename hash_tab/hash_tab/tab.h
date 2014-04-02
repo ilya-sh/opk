@@ -1,6 +1,8 @@
-typedef void *Pointer;
+typedef void* Pointer;
 typedef unsigned(*HashFunction)(char *key);
 typedef void(*Destructor)(Pointer);
+
+#define DEFAULT_VALUE NULL
 
 #include <stddef.h>
 #include "list.h"

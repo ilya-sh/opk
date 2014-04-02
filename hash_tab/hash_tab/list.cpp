@@ -6,7 +6,7 @@
 Pointer search_data_by_key(List *list, char *key)
 {
 	if (!list)
-		return NULL;
+		return DEFAULT_VALUE;
 	List *temp = list;
 	while (temp)
 	{
@@ -19,7 +19,7 @@ Pointer search_data_by_key(List *list, char *key)
 			return temp->data;
 		}
 	}
-	return NULL;
+	return DEFAULT_VALUE;
 }
 
 int data_has(List *list, char *key)
@@ -182,5 +182,10 @@ List* peek_b(List *source)
 
 void print_keys_data(char *key, Pointer data)
 {
+<<<<<<< HEAD
+	printf("%s\t%d\n", key, data);
+}
+=======
 	printf("%s\t%s\n", key, data);
 }
+>>>>>>> b6ad44bc57d752dff31f8d8e17637fee2b355e05

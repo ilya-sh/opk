@@ -6,6 +6,7 @@
 #pragma once
 
 #include "targetver.h"
+#include "my_bsearch.h"
 
 #include <stdio.h>
 #include <tchar.h>

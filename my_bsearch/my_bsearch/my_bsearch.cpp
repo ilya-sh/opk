@@ -49,39 +49,45 @@ void *my_bsearch(const void *key, const void *base,
 	}
 }
 
-int compfun(const void * a1, const void* a2)
+int int_compfun(const void * a1, const void* a2)
 {
-	return *((type*)a1) - *((type*)a2);
+	return *((int*)a1) - *((int*)a2);
 }
 
-int _tmain(int argc, _TCHAR* argv[])
+int float_compfun(const void *a1, const void* a2)
 {
-	srand(time(NULL));
-	type a[SIZE];
-	int i;
-	for (i = 0; i < SIZE; i++)
-	{
-		a[i] = rand() % 100;
-		printf("%d ", a[i]);
-	}
-	printf("\n");
-	qsort(a, SIZE, sizeof(type), compfun);
-	type k;
-	for (i = 0; i < SIZE; i++)
-	{
-		printf("%d ", a[i]);
-	}
-	printf("\n");
-	scanf("%d", &k);
-	type* res = (type*)my_bsearch(&k, a, SIZE, sizeof(type), compfun);
-	if (res != NULL)
-	{
-		printf("FOUND\n");
-	}
-	else
-	{
-		printf("NOT FOUND\n");
-	}
+	return *((float*)a1) - *((float*)a2);
+}
+
+int main(int argc, char* argv[])
+{
+	//srand(time(NULL));
+	//type a[SIZE];
+	//int i;
+	//for (i = 0; i < SIZE; i++)
+	//{
+	//	a[i] = rand() % 100;
+	//	printf("%d ", a[i]);
+	//}
+	//printf("\n");
+	//qsort(a, SIZE, sizeof(type), compfun);
+	//type k;
+	//for (i = 0; i < SIZE; i++)
+	//{
+	//	printf("%d ", a[i]);
+	//}
+	//printf("\n");
+	//scanf("%d", &k);
+	//type* res = (type*)my_bsearch(&k, a, SIZE, sizeof(type), compfun);
+	//if (res != NULL)
+	//{
+	//	printf("FOUND\n");
+	//}
+	//else
+	//{
+	//	printf("NOT FOUND\n");
+	//}
+	test();
 	return 0;
 }
 

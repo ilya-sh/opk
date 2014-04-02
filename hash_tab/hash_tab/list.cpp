@@ -182,13 +182,6 @@ List* peek_b(List *source)
 
 void print_keys_data(char *key, Pointer data)
 {
-<<<<<<< HEAD
-	printf("%s\t%d\n", key, data);
-}
-=======
+
 	printf("%s\t%s\n", key, data);
 }
-<<<<<<< HEAD
->>>>>>> b6ad44bc57d752dff31f8d8e17637fee2b355e05
-=======
->>>>>>> b6ad44bc57d752dff31f8d8e17637fee2b355e05

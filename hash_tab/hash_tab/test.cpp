@@ -15,11 +15,11 @@ void test()
 
 	ht = ht_init(5, uns_str_len, 0);
 
-	ht_set(ht, "name1", (Pointer)17657868789890890);
-	ht_set(ht, "name2", (Pointer)2);
-	ht_set(ht, "name3", (Pointer)3);
-	ht_set(ht, "_name4", (Pointer)4);
-	ht_set(ht, "_name5", (Pointer)5);
+	ht_set(ht, "name1", (Pointer)"17657868789890890");
+	ht_set(ht, "name2", (Pointer)"2");
+	ht_set(ht, "name3", (Pointer)"3");
+	ht_set(ht, "_name4", (Pointer)"4");
+	ht_set(ht, "_name5", (Pointer)"5");
 
 	ht_traverse(ht, print_keys_data);
 
@@ -29,9 +29,9 @@ void test()
 
 	assert(!ht_has(ht, "name3"));
 
-	ht_set(ht, "name2", (Pointer)2.0);
+	ht_set(ht, "name2", (Pointer)"2.0");
 
-	assert((Pointer)ht_get(ht, "name2") == 2.0);
+	assert(!strcmp((char*)ht_get(ht, "name2"),"2.0"));
 
 	ht_delete(ht, "name1");
 	ht_delete(ht, "name2");

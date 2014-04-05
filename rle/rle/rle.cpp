@@ -8,9 +8,10 @@ void check_file(FILE* input, FILE* output)
 	int count[256];
 	for (i = 0; i < 256; i++)
 		count[i] = 0;
-	prev_byte = -1;
-	temp = 1;
-	while (fread(&byte, 1, 1, input) == 1)
+	fread(&prev_byte, 1, 1, input);
+	byte = prev_byte;
+	temp = 0;
+	do
 	{
 		if (prev_byte == byte)
 		{
@@ -26,7 +27,7 @@ void check_file(FILE* input, FILE* output)
 			temp = 1;
 			prev_byte = byte;
 		}
-	}
+	} while (fread(&byte, 1, 1, input) == 1);
 	if (!flag)
 	{
 		fseek(input, 0, SEEK_SET);
